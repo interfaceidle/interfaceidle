@@ -1,0 +1,16 @@
+<div class="darkMode">
+  <h3>Achievements</h3>
+  <hr/>
+  <div class="achievementGrid">
+      <div *ngFor="let achievement of achievementService.achievements">
+        <div class="itemSlot" *ngIf="achievement.unlocked">
+          <div *ngIf="achievement.displayName">{{achievement.displayName}}</div>
+          <div *ngIf="!achievement.displayName">{{achievement.name}}</div>
+        </div>
+        <div class="itemSlot" *ngIf="!achievement.unlocked">
+          ?
+        </div>
+      </div>
+    </div>
+</div>
+
