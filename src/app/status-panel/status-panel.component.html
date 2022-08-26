@@ -1,6 +1,19 @@
 <div class="statusPanelContainer">
-  <h3>Interface Idle</h3>
-  <hr/>
+  <ng-container *ngFor="let status of characterService.status | keyvalue: originalOrder" >
+    <div class="{{status.key}}">
+      <div>{{status.key | camelToTitle}}</div>
+      <div class="progress-bar"
+        [attr.value]="status.value.value| number:'1.0-1'"
+        [attr.max]="status.value.max | number:'1.0-1'">
+        <span [style.width.%]="100 * status.value.value / status.value.max"></span>
+      </div>
+    </div>
+  </ng-container>
 
-
+  <ng-container *ngFor="let things of inventoryService.things | keyvalue: originalOrder" >
+    <div>
+      <span>{{things.key | camelToTitle}}: </span>
+      <span>{{things.value.value| number:'1.0-1'}}/{{things.value.max | number:'1.0-1'}}</span>
+    </div>
+  </ng-container>
 </div>

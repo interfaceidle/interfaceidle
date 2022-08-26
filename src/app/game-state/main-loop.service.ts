@@ -1,6 +1,15 @@
 import { Injectable,Injector } from '@angular/core';
 import { Subject } from 'rxjs';
 
+export interface ChangeField {
+  field: string,
+  value: number
+}
+export interface ValMax {
+  value: number,
+  max: number
+}
+
 export interface MainLoopProperties {
   lastTime: number;
   pause: boolean;
@@ -18,6 +27,7 @@ export class MainLoopService {
    * Sends true on new day
    */
   tickSubject = new Subject<boolean>();
+  actionSubject = new Subject<ChangeField>();
   pause = true;
   totalTicks = 0;
   lastTime: number = new Date().getTime();

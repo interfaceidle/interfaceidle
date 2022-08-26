@@ -1,0 +1,13 @@
+<div>
+  <div class="actionGrid">
+    <div *ngFor="let activity of activityService.activities">
+      <button mat-stroked-button
+        (click)="actionClicked(activity, $event)"
+        [ngClass]="{'enabled': activityService.activityEnabled(activity)}"
+        matTooltip="{{activity.description}}">
+        {{activity.label}}
+      </button>
+    </div>
+  </div>
+</div>
+

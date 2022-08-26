@@ -1,17 +1,16 @@
 import { Injectable, Injector } from '@angular/core';
-import { MainLoopService } from './main-loop.service';
+import { MainLoopService, ChangeField, ValMax } from './main-loop.service';
 
 export interface CharacterProperties {
-  credits: number;
+  status: { [key: string]:  ValMax }
 }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
 
-  credits = 0;
+  status: { [key: string]:  ValMax } = {};
 
   constructor(
     private injector: Injector,
@@ -19,17 +18,29 @@ export class CharacterService {
   ) {
     mainLoopService.tickSubject.subscribe(() => {
     });
+    mainLoopService.actionSubject.subscribe((changeField: ChangeField) => {
+      if (this.status[changeField.field]) {
+        this.status[changeField.field].value += changeField.value;
+        if (this.status[changeField.field].value > this.status[changeField.field].max){
+          this.status[changeField.field].value = this.status[changeField.field].max;
+        } else if (this.status[changeField.field].value < 0){
+          this.status[changeField.field].value = 0;
+        }
+      }
+
+    });
+
   }
 
   getProperties(): CharacterProperties {
     return {
-      credits: this.credits,
+      status: this.status,
 
     }
   }
 
   setProperties(properties: CharacterProperties) {
-    this.credits = properties.credits || 0;
+    this.status = properties.status || {health: {value: 10,max: 10}, stamina: {value: 10,max: 10}};
   }
 
 }

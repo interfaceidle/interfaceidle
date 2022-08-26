@@ -75,9 +75,25 @@ export class GameStateService {
   loadFromLocalStorage(): boolean {
     const gameStateSerialized = window.localStorage.getItem(LOCAL_STORAGE_GAME_STATE_KEY + this.getDeploymentFlavor());
     if (!gameStateSerialized) {
-      return false;
+      // @ts-ignore
+      this.characterService.setProperties({});
+      // @ts-ignore
+      this.achievementService.setProperties({});
+      // @ts-ignore
+      this.homeService.setProperties({});
+      // @ts-ignore
+      this.inventoryService.setProperties({});
+      // @ts-ignore
+      this.activityService.setProperties({});
+      // @ts-ignore
+      this.battleService.setProperties({});
+      // @ts-ignore
+      this.logService.setProperties({});
+      // @ts-ignore
+      this.mainLoopService.setProperties({});
+    } else {
+      this.importGame(gameStateSerialized);
     }
-    this.importGame(gameStateSerialized);
     return true;
   }
 

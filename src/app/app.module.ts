@@ -9,17 +9,26 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { AchievementPanelComponent } from './achievement-panel/achievement-panel.component';
 import { ChangelogPanelComponent } from './changelog-panel/changelog-panel.component';
 import { StatusPanelComponent } from './status-panel/status-panel.component';
+import { HeaderPanelComponent } from './header-panel/header-panel.component';
+import { ActionsPanelComponent } from './actions-panel/actions-panel.component';
 
 const materialModules = [
   MatDialogModule,
   MatIconModule,
   MatTabsModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatButtonModule,
 ];
 
 @NgModule({
@@ -31,6 +40,8 @@ const materialModules = [
     AchievementPanelComponent,
     ChangelogPanelComponent,
     StatusPanelComponent,
+    HeaderPanelComponent,
+    ActionsPanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +57,8 @@ const materialModules = [
   providers: [
     TitleCasePipe,
     BigNumberPipe,
-    MatSnackBar
+    MatSnackBar,
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: { disableTooltipInteractivity: true, showDelay: 500 } }
   ],
   bootstrap: [AppComponent]
 })
