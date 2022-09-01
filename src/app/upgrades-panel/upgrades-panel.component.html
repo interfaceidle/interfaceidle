@@ -1,0 +1,14 @@
+<div>
+  <div class="buttonGrid">
+    <ng-container *ngFor="let activity of activityService.activities" >
+      <div *ngIf="activity.activityType === 'upgrade' && !activity.locked">
+        <div matTooltip="{{activity.tooltip}}" #{{activity.name}}="matTooltip" #tooltip="matTooltip" (click)="tooltip.show()">
+          <button mat-stroked-button (click)="upgradeClicked(activity, $event)" [disabled]="!activityService.activityEnabled(activity)">
+            {{activity.label}}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+

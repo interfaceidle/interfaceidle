@@ -7,8 +7,6 @@ import { MainLoopService } from './main-loop.service';
 import { BattleService } from './battle.service';
 import { GameStateService } from './game-state.service';
 import { ActivityService } from './activity.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
 
 export interface Achievement {
   name: string;
@@ -56,18 +54,32 @@ export class AchievementService {
 
   // important: achievement effects must be idempotent as they may be called multiple times
   achievements: Achievement[] = [
+    {
+      name: "upgrades",
+      displayName: "Upgrades!",
+      description: "You unlocked your first upgrade!",
+      hint: "You'll need some money to get along in this world.",
+      check: () => {
+        return this.inventoryService.things["credits"].value >= 10;
+      },
+      effect: () => {
+        if (!this.activityService.unlockedTabs.includes("upgrades")){
+          this.activityService.unlockedTabs.push("upgrades");
+        }
+      },
+      unlocked: false
+    }
   ];
 
   unlockAchievement(achievement: Achievement, newAchievement: boolean){
     if (newAchievement){
       this.unlockedAchievements.push(achievement.name);
-      //this.logService.addLogMessage(achievement.description, 'STANDARD', 'STORY');
       // check if gameStateService is injected yet, if not, inject it (circular dependency issues)
       if (!this.gameStateService){
         this.gameStateService = this.injector.get(GameStateService);
       }
-      this.gameStateService.savetoLocalStorage();
-      //this.characterService.toast('Achievement Unlocked: ' + achievement.name);
+      setTimeout(() => this.gameStateService?.savetoLocalStorage());
+      this.mainLoopService.toast('Achievement Unlocked: ' + achievement.displayName);
     }
     achievement.effect();
     achievement.unlocked = true;

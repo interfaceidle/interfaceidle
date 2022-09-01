@@ -1,5 +1,6 @@
 import { Injectable,Injector } from '@angular/core';
-import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject, Subscription } from 'rxjs';
 
 export interface ChangeField {
   field: string,
@@ -27,7 +28,9 @@ export class MainLoopService {
    * Sends true on new day
    */
   tickSubject = new Subject<boolean>();
+  slowTickSubject = new Subject<boolean>();
   actionSubject = new Subject<ChangeField>();
+  upgradeSubject = new Subject<ChangeField>();
   pause = true;
   totalTicks = 0;
   lastTime: number = new Date().getTime();
@@ -36,9 +39,12 @@ export class MainLoopService {
   scientificNotation = false;
   offlineDivider = 10;
   seconds_per_tick=1;
+  private snackBar: MatSnackBar;
+  private snackBarObservable?: Subscription;
 
   constructor(
     private injector: Injector) {
+      this.snackBar = this.injector.get(MatSnackBar);
   }
 
   getProperties(): MainLoopProperties {
@@ -65,6 +71,7 @@ export class MainLoopService {
 
   start() {
     window.setInterval(()=> {
+      /*
       const newTime = new Date().getTime();
       let timeDiff = (newTime - this.lastTime) / 1000;
 
@@ -79,13 +86,24 @@ export class MainLoopService {
         this.bankedTicks++;
         return;
       }
-
+      */
       this.tickSubject.next(true);
+      /*
       if (this.bankedTicks >= 1){
         this.tickSubject.next(true);
         this.bankedTicks--;
       }
-    }, 100);
+      */
+    }, 50);
+    window.setInterval(()=> {
+      this.slowTickSubject.next(true);
+    }, 1000);
   }
 
+  toast(message: string, duration = 5000) {
+    const snackBar = this.snackBar.open(message, "Close", { duration: duration, horizontalPosition: 'right', verticalPosition: 'bottom', panelClass: ['snackBar', 'darkMode'] });
+    this.snackBarObservable = snackBar.onAction().subscribe(() => {
+      this.snackBarObservable?.unsubscribe();
+    })
+  }
 }

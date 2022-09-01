@@ -15,9 +15,13 @@ export interface InventoryProperties {
 })
 export class InventoryService {
 
-  things: { [key: string]:  ValMax } = {
+  thingsFieldDescriptions: { [key: string]:  string } = {
+    "credits": "The standard currency of New Boston. A better credit chip can store more credits.",
+    "nanobots": "A tiny robot. With the right upgrades or in large numbers, these can be handy.",
+    "automators": "An interface doesn't just let you control machine, it also lets you set up controls for your own actions. An automator lets you automatically repeat any action without even thinking about it.",
+  };
 
-  }
+  things: { [key: string]:  ValMax } = {}
 
 
   constructor(
@@ -25,8 +29,6 @@ export class InventoryService {
     mainLoopService: MainLoopService,
   ) {
 
-    mainLoopService.tickSubject.subscribe(() => {
-    });
     mainLoopService.actionSubject.subscribe((changeField: ChangeField) => {
       if (this.things[changeField.field]) {
         this.things[changeField.field].value += changeField.value;
@@ -38,8 +40,21 @@ export class InventoryService {
       }
     });
 
+    mainLoopService.upgradeSubject.subscribe((changeField: ChangeField) => {
+      if (this.things[changeField.field]) {
+        this.things[changeField.field].max += changeField.value;
+      } else if (this.thingsFieldDescriptions[changeField.field] !== undefined){
+        this.things[changeField.field] = { value: 0, max: changeField.value };
+      }
+    });
   }
 
+  checkFor(field: string, value: number): boolean{
+    if (this.things[field] && this.things[field].value >= value){
+      return true;
+    }
+    return false;
+  }
 
   getProperties(): InventoryProperties {
     return {

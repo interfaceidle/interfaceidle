@@ -1,0 +1,8 @@
+<div>
+  <div *ngFor="let trait of characterService.traits | keyvalue: originalOrder">
+    <span>
+      {{trait.key}}: {{trait.value}}
+    </span>
+  </div>
+</div>
+

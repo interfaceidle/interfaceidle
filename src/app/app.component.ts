@@ -1,13 +1,9 @@
-import { Component, Injector, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GameStateService } from './game-state/game-state.service';
 import { MainLoopService } from './game-state/main-loop.service';
 import { HostListener } from '@angular/core';
-import { CharacterService } from './game-state/character.service';
-import { AchievementPanelComponent } from './achievement-panel/achievement-panel.component';
 import { environment } from '../environments/environment';
-import { ChangelogPanelComponent } from './changelog-panel/changelog-panel.component';
-import { StatusPanelComponent } from './status-panel/status-panel.component';
 
 @Pipe({name: 'floor'})
 export class FloorPipe implements PipeTransform {
@@ -86,7 +82,6 @@ export class AppComponent implements OnInit {
   constructor(
     private mainLoopService: MainLoopService,
     public gameStateService: GameStateService,
-    public characterService: CharacterService,
     public dialog: MatDialog
   ) {}
 

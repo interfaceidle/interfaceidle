@@ -16,4 +16,9 @@ export class ActionsPanelComponent {
     this.activityService.doActivity(activity);
   }
 
+  actionRightClicked(activity: Activity, event: MouseEvent){
+    event.preventDefault();
+    event.stopPropagation();
+    this.activityService.automateActivity(activity);
+  }
 }

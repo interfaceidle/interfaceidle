@@ -1,1 +1,32 @@
-<span>Interface Idle</span>
+<div class="topBar">
+  <span class="gameTitle">
+    Interface Idle
+    <span class="versionNumber" (click)="changelogClicked()">{{gameStateService.isExperimental ? "Experimental" : "v" + applicationVersion}}</span>
+  </span>
+  <span *ngIf="activityService.classChangeAvailable()">
+    <mat-icon matTooltip="A decision point is available." class="iconButton" (click)="classChangeClicked()">
+      keyboard_double_arrow_up
+    </mat-icon>
+  </span>
+  <span>
+    <span>
+      <mat-icon matTooltip="Configuration options for purchased items." class="iconButton" (click)="optionsClicked()">
+        settings
+      </mat-icon>
+    </span>
+    <mat-icon matTooltip="Achievements!" class="iconButton" (click)="achievementsClicked()">
+      military_tech
+    </mat-icon>
+    <mat-icon matTooltip="Click to save your game now." class="iconButton" (click)="saveClicked()">
+      save
+    </mat-icon>
+    <input type="file" id="importFile" #importFile (change)="importClicked($event)" />
+    <mat-icon matTooltip="Import or export your save game file." class="iconButton" (click)="importFile.click()">
+      upload
+    </mat-icon>
+    <mat-icon matTooltip="Import or export your save game file." class="iconButton" (click)="exportClicked()">
+      download
+    </mat-icon>
+  </span>
+  <a href="" matTooltip="Completely restart the game." (click)="hardResetClicked($event)">Hard Reset</a>
+</div>

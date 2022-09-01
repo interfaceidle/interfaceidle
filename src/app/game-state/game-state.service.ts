@@ -34,7 +34,7 @@ export class GameStateService {
   isExperimental = window.location.href.includes("experimental");
   gameStartTimestamp = new Date().getTime();
   easyModeEver = false;
-  saveInterval = 300; //In seconds
+  saveInterval = 60; //In seconds
 
   constructor(
     private characterService: CharacterService,
@@ -109,7 +109,7 @@ export class GameStateService {
     this.logService.setProperties(gameState.logs);
     this.mainLoopService.setProperties(gameState.mainLoop);
     this.gameStartTimestamp = gameState.gameStartTimestamp || new Date().getTime();
-    this.saveInterval = gameState.saveInterval || 10;
+    this.saveInterval = gameState.saveInterval || 60;
   }
 
   getGameExport(): string{
@@ -123,10 +123,12 @@ export class GameStateService {
       logs: this.logService.getProperties(),
       mainLoop: this.mainLoopService.getProperties(),
       gameStartTimestamp: this.gameStartTimestamp,
-      saveInterval: this.saveInterval || 300,
+      saveInterval: this.saveInterval || 60,
       easyModeEver: this.easyModeEver
     };
+    //console.log(gameState);
     let gameStateString = JSON.stringify(gameState);
+    //console.log(gameStateString);
     gameStateString = btoa(encodeURIComponent(gameStateString));
     return gameStateString;
   }

@@ -1,13 +1,18 @@
 <div>
-  <div class="actionGrid">
-    <div *ngFor="let activity of activityService.activities">
-      <button mat-stroked-button
-        (click)="actionClicked(activity, $event)"
-        [ngClass]="{'enabled': activityService.activityEnabled(activity)}"
-        matTooltip="{{activity.description}}">
-        {{activity.label}}
-      </button>
-    </div>
+  <div class="buttonGrid">
+    <ng-container *ngFor="let activity of activityService.activities" >
+      <div *ngIf="activity.activityType === 'action' && !activity.locked">
+        <div matTooltip="{{activity.tooltip}}" #tooltip="matTooltip" (click)="tooltip.show()" (contextmenu)="actionRightClicked(activity, $event)">
+          <button mat-stroked-button (click)="actionClicked(activity, $event)" [ngClass]="activityService.automatedActions.includes(activity.name) ? 'automated' : ''"
+            [disabled]="!activityService.activityEnabled(activity)">
+            {{activity.label}}
+            <div *ngIf="(activity?.coolDownLeft || 0) > 0" class="cooldown">
+              {{(activity.coolDownLeft || 0) / 1000 | number: '1.0-1'}}s
+            </div>
+          </button>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
 
